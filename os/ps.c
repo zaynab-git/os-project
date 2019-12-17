@@ -6,7 +6,6 @@
 
 int main(int argc,char *argv[])
 {
-	int a;
-	getchildren(a);
+	getchildren(getpid());
 	exit();
 }

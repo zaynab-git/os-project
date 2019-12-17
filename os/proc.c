@@ -536,17 +536,20 @@ procdump(void)
 int
 getchildren(int a)
 {
+  argint(0,&a);
+  
   struct proc *p;
   struct proc *parent;
-  int childs;
+  int childs=0;
 
   acquire(&ptable.lock);
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     parent = p->parent;
     if(parent->pid == a){
-	childs = ///78 !
+	childs = childs*10 + p->pid;
     }
   }
   release(&ptable.lock);
-  return childs;	
+  cprintf("%d",a);
+  return 0;	
 }
