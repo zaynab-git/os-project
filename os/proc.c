@@ -550,6 +550,6 @@ getchildren(int a)
     }
   }
   release(&ptable.lock);
-  cprintf("%d",a);
-  return 0;	
+ // cprintf("child id is %d \n",childs);
+  return childs;	
 }
