@@ -95,3 +95,9 @@ sys_getchildren(int a)
 {
 	return getchildren(a);
 }
+
+int
+sys_getcount(int a)
+{
+	return getcount(a);
+}
