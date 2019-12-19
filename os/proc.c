@@ -553,3 +553,19 @@ getchildren(int a)
  // cprintf("child id is %d \n",childs);
   return childs;	
 }
+
+int
+getcount(int a , int id)
+{
+  argint(0,&a);
+  argint(1,&id);
+  struct proc *p;
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+ {
+    if(id == p->pid)
+    {
+       return p->count[a];
+    }
+  }
+  return -1;
+}

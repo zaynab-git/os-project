@@ -97,7 +97,7 @@ sys_getchildren(int a)
 }
 
 int
-sys_getcount(int a)
+sys_getcount(int a, int id)
 {
-	return getcount(a);
+	return getcount(a,id);
 }

@@ -6,6 +6,7 @@
 #include "proc.h"
 #include "x86.h"
 #include "syscall.h"
+#include <stddef.h>
 
 // User code makes a system call with INT T_SYSCALL.
 // System call number in %eax.
@@ -14,6 +15,9 @@
 // to a saved program counter, and then the first argument.
 
 // Fetch the int at addr from the current process.
+
+int  c[24] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}; 
+
 int
 fetchint(uint addr, int *ip)
 {
@@ -24,6 +28,7 @@ fetchint(uint addr, int *ip)
   *ip = *(int*)(addr);
   return 0;
 }
+
 
 // Fetch the nul-terminated string at addr from the current process.
 // Doesn't actually copy the string - just sets *pp to point at it.
@@ -129,7 +134,7 @@ static int (*syscalls[])(void) = {
 [SYS_mkdir]   sys_mkdir,
 [SYS_close]   sys_close,
 [SYS_getchildren]   sys_getchildren,
-[SYS_getcount]   SYS_getcount,
+[(int)SYS_getcount]   sys_getcount,
 };
 
 void
@@ -137,10 +142,12 @@ syscall(void)
 {
   int num;
   struct proc *curproc = myproc();
-
   num = curproc->tf->eax;
+
   if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
-    curproc->tf->eax = syscalls[num]();
+    curproc->tf->eax = syscalls[num]();  
+    c[num]++;
+    curproc->count[num] = c[num];
   } else {
     cprintf("%d %s: unknown sys call %d\n",
             curproc->pid, curproc->name, num);

@@ -24,7 +24,7 @@ char* sbrk(int);
 int sleep(int);
 int uptime(void);
 int getchildren(int);
-int getcount(int);
+int getcount(int,int);
 
 // ulib.c
 int stat(const char*, struct stat*);
