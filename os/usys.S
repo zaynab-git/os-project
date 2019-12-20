@@ -31,3 +31,6 @@ SYSCALL(sleep)
 SYSCALL(uptime)
 SYSCALL(getchildren)
 SYSCALL(getcount)
+SYSCALL(changepriority)
+SYSCALL(changepolicy)
+

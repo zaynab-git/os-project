@@ -6,6 +6,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#define NULL 0
 
 struct {
   struct spinlock lock;
@@ -13,6 +14,9 @@ struct {
 } ptable;
 
 static struct proc *initproc;
+struct proc *pl;
+struct proc *highp = NULL;
+int mood  = 0 ;
 
 int nextpid = 1;
 extern void forkret(void);
@@ -88,6 +92,8 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+  p->priority = 5 ;
+  p->calculatedpriority = 0;
 
   release(&ptable.lock);
 
@@ -323,33 +329,48 @@ void
 scheduler(void)
 {
   struct proc *p;
+  
   struct cpu *c = mycpu();
   c->proc = 0;
-  
   for(;;){
     // Enable interrupts on this processor.
     sti();
-
+    
     // Loop over process table looking for process to run.
     acquire(&ptable.lock);
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
       if(p->state != RUNNABLE)
         continue;
-
-      // Switch to chosen process.  It is the process's job
-      // to release ptable.lock and then reacquire it
-      // before jumping back to us.
+      if (mood == 1 || mood == 2)
+      {
+         if(ticks % QUANTUM != 0)
+         break;
+      }
+      if( mood == 2)
+      {  
+        cprintf("%d",mood);
+      highp = p;
+       for(pl = ptable.proc; pl < &ptable.proc[NPROC]; pl++)
+       {
+         if(pl->state != RUNNABLE)
+            continue;
+      if (highp->calculatedpriority > pl->calculatedpriority )
+         highp = pl; 
+       }
+       p = highp ;
+       p->calculatedpriority += p->priority;
+      cprintf("%d    ", p->calculatedpriority);
+      }
       c->proc = p;
       switchuvm(p);
       p->state = RUNNING;
-
       swtch(&(c->scheduler), p->context);
       switchkvm();
-
-      // Process is done running for now.
-      // It should have changed its p->state before coming back.
       c->proc = 0;
+        
+   
     }
+    
     release(&ptable.lock);
 
   }
@@ -561,11 +582,40 @@ getcount(int a , int id)
   argint(1,&id);
   struct proc *p;
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
- {
+  {
     if(id == p->pid)
     {
        return p->count[a];
     }
   }
   return -1;
+}
+
+int 
+changepriority(int a , int id)
+{
+  argint(0,&a);
+  argint(1,&id);
+  struct proc *p;
+      cprintf(" in");
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+  {
+    cprintf("%d  :   %d  \n",p->pid,p->priority);
+        cprintf("%d  :   %d  \n",p->pid,p->calculatedpriority);
+    if(id == p->pid)
+    {
+       p->priority = a;
+       return 1;
+    }
+  }
+  return -1;
+}
+
+int 
+changepolicy(int a)
+{
+  argint(0,&a);
+  mood = a;
+  return 1;
+  
 }

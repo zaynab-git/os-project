@@ -122,6 +122,8 @@ void            wakeup(void*);
 void            yield(void);
 int		getchildren(int);
 int		getcount(int,int);
+int		changepriority(int,int);
+int		changepolicy(int);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

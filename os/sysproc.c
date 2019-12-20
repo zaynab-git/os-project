@@ -97,7 +97,20 @@ sys_getchildren(int a)
 }
 
 int
+sys_changepolicy(int a)
+{
+	return changepolicy(a);
+}
+
+int
+sys_changepriority(int a, int id)
+{
+	return changepriority(a,id);
+}
+
+int
 sys_getcount(int a, int id)
 {
 	return getcount(a,id);
 }
+

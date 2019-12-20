@@ -22,3 +22,6 @@
 #define SYS_close  21
 #define SYS_getchildren  22
 #define SYS_getcount  23
+#define SYS_changepolicy  25
+#define SYS_changepriority  24
+

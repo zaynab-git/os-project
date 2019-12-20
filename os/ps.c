@@ -10,10 +10,15 @@ int
 main(int argc, char *argv[])
 {
     
-    printf(1," \n getcount  : \n ");
-    getCount();  
-    printf(1,"getchildren whit 3 forks : \n ");
-    getChildren();
+   // printf(1," \n getcount  : \n ");
+   // getCount();  
+   // printf(1,"getchildren whit 3 forks : \n ");
+   // getChildren();
+   changepolicy(2); // it will be changed in the next ps call //   <---  // attention !!!!!!!!!!!!
+   changepriority(5,3);
+   
+ 
+ exit();
 }
 
 void getCount()
@@ -24,7 +29,7 @@ void getCount()
     printf(1,"close : %d\n",getcount(21,getpid()));
     printf(1,"getchildren : %d\n",getcount(22,getpid()));
     printf(1,"get count : %d\n",getcount(23,getpid()));
-    //exit();
+    exit();
 }
 
 void getChildren()
@@ -53,11 +58,4 @@ void getChildren()
 	}	
 	exit();
 }
-//int main()
-//{
-	//printf("parent id is : %d \n" , (int) getpid());
-	//printf("firsr fork child id is : %d \n" , (int) fork());
-	//printf("second child id is : %d \n" , (int) fork());
-	//printf("3th fork child id is : %d \n" , (int) fork());
-//	
-//}
+
