@@ -95,6 +95,7 @@ found:
   p->pid = nextpid++;
   p->priority = 5 ;
   p->calculatedpriority = 0;
+  p->ticket = 0;
 
   release(&ptable.lock);
 
@@ -632,24 +633,25 @@ initTicketlock(struct ticketlock *lk)
 void
 acquireTicketlock(struct ticketlock *lk)
 {
-  if(lk->proc == myproc() && lk->turn != lk->ticket)
-    panic("lock already acquired");
 
-  uint current_ticket = fetch_and_add(&(lk->ticket),lk->ticket);
+ struct proc *p ;
+ p = myproc();
+  if(lk->proc == p)
+     panic("proccess alredy has the lock");
   
-  while(current_ticket == lk->turn);
+  p->ticket = fetch_and_add(&(lk->ticket),1);
 
-  lk->proc = myproc();
+  while(p->ticket != lk->turn);
+
+  lk->proc = myproc();  
 }
-
 void
 releaseTicketlock(struct ticketlock *lk)
 {
-  if(!(lk->proc == myproc() && lk->turn != lk->ticket))
-    panic("lock already release");
-
+  if(lk->proc != myproc())
+     panic("proccess dosnt have the lock");
+  lk->turn ++;  
   lk->proc = 0;
 
-  lk->turn += 1;
+  
 }
-
