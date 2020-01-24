@@ -112,6 +112,9 @@ extern int sys_getchildren(void);
 extern int sys_getcount(void);
 extern int sys_changepriority(void);
 extern int sys_changepolicy(void);
+extern int sys_initTicketlock(void);
+extern int sys_acquireTicketlock(void);
+extern int sys_releaseTicketlock(void);
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -139,6 +142,9 @@ static int (*syscalls[])(void) = {
 [(int)SYS_getcount]   sys_getcount,
 [(int)SYS_changepriority]   sys_changepriority,
 [(int)SYS_changepolicy]   sys_changepolicy,
+[(int)SYS_initTicketlock]  sys_initTicketlock,
+[(int)SYS_acquireTicketlock]  sys_acquireTicketlock,
+[(int)SYS_releaseTicketlock]  sys_releaseTicketlock,
 };
 
 void

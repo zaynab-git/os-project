@@ -7,6 +7,7 @@
 #include "mmu.h"
 #include "proc.h"
 
+
 int
 sys_fork(void)
 {
@@ -114,3 +115,38 @@ sys_getcount(int a, int id)
 	return getcount(a,id);
 }
 
+int sys_initTicketlock(void)
+{
+  struct ticketlock *tl;
+  if (argptr(0, (char**)&tl, sizeof(struct ticketlock*)) < 0)
+  {
+    return -1;
+  }
+
+  initTicketlock(tl);
+  return 0;
+}
+
+int sys_acquireTicketlock(void)
+{
+  struct ticketlock *tl;
+  if (argptr(0, (char**)&tl, sizeof(struct ticketlock*)) < 0)
+  {
+    return -1;
+  }
+
+  acquireTicketlock(tl);
+  return 0;
+}
+
+int sys_releaseTicketlock(void)
+{
+  struct ticketlock *tl;
+  if (argptr(0, (char**)&tl, sizeof(struct ticketlock*)) < 0)
+  {
+    return -1;
+  }
+
+  releaseTicketlock(tl);
+  return 0;
+}

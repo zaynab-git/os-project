@@ -1,5 +1,17 @@
 // Routines to let C code use special x86 instructions.
 
+
+// atomic fetch-and-add operation
+static inline uint
+fetch_and_add(volatile uint *addr, uint val)
+{
+  asm volatile("lock; xaddl %%eax, %2;" :
+               "=a" (val) :
+               "a" (val) , "m" (*addr) :
+               "memory");
+  return val;
+}
+
 static inline uchar
 inb(ushort port)
 {

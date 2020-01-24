@@ -22,6 +22,9 @@
 #define SYS_close  21
 #define SYS_getchildren  22
 #define SYS_getcount  23
-#define SYS_changepolicy  25
 #define SYS_changepriority  24
+#define SYS_changepolicy  25
+#define SYS_initTicketlock  26
+#define SYS_acquireTicketlock  27
+#define SYS_releaseTicketlock  28
 

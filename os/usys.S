@@ -33,4 +33,7 @@ SYSCALL(getchildren)
 SYSCALL(getcount)
 SYSCALL(changepriority)
 SYSCALL(changepolicy)
+SYSCALL(initTicketlock)
+SYSCALL(acquireTicketlock)
+SYSCALL(releaseTicketlock)
 

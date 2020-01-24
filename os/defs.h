@@ -9,6 +9,7 @@ struct spinlock;
 struct sleeplock;
 struct stat;
 struct superblock;
+struct ticketlock;
 
 // bio.c
 void            binit(void);
@@ -124,6 +125,10 @@ int		getchildren(int);
 int		getcount(int,int);
 int		changepriority(int,int);
 int		changepolicy(int);
+void 		initTicketlock(struct ticketlock*);
+void 		acquireTicketlock(struct ticketlock*);
+void 		releaseTicketlock(struct ticketlock*);
+
 
 // swtch.S
 void            swtch(struct context**, struct context*);

@@ -6,6 +6,7 @@
 #include "x86.h"
 #include "proc.h"
 #include "spinlock.h"
+#include "ticketlock.h"
 #define NULL 0
 
 struct {
@@ -619,3 +620,36 @@ changepolicy(int a)
   return 1;
   
 }
+
+void
+initTicketlock(struct ticketlock *lk)
+{
+  lk->ticket = 0;
+  lk->turn = 0;
+  lk->proc = 0;
+}
+
+void
+acquireTicketlock(struct ticketlock *lk)
+{
+  if(lk->proc == myproc() && lk->turn != lk->ticket)
+    panic("lock already acquired");
+
+  uint current_ticket = fetch_and_add(&(lk->ticket),lk->ticket);
+  
+  while(current_ticket == lk->turn);
+
+  lk->proc = myproc();
+}
+
+void
+releaseTicketlock(struct ticketlock *lk)
+{
+  if(!(lk->proc == myproc() && lk->turn != lk->ticket))
+    panic("lock already release");
+
+  lk->proc = 0;
+
+  lk->turn += 1;
+}
+

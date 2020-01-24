@@ -1,5 +1,6 @@
 struct stat;
 struct rtcdate;
+struct ticketlock;
 
 // system calls
 int fork(void);
@@ -27,6 +28,9 @@ int getchildren(int);
 int getcount(int,int);
 int changepriority(int,int);
 int changepolicy(int);
+void initTicketlock(struct ticketlock*);
+void acquireTicketlock(struct ticketlock*);
+void releaseTicketlock(struct ticketlock*);
 
 // ulib.c
 int stat(const char*, struct stat*);
